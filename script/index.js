@@ -13,10 +13,6 @@ const loadItems=(id)=>{
 
     activeButton.forEach(btn=> btn.classList.remove("active"));
 
-    // const activeButton = document.querySelectorAll(".btn-category");
-    
-    // activeButton.forEach(btn => btn.classList.remove("active"));
-
     const categoryButton = document.getElementById(`cat-btn-${id}`);
     console.log(categoryButton);
     categoryButton.classList.add("active")
