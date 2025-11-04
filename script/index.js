@@ -8,6 +8,14 @@ const loadCategories=()=>{
 const loadItems=(id)=>{
     console.log(id)
     const url = `https://openapi.programming-hero.com/api/category/${id}`;
+
+    const activeButton = document.querySelectorAll(".btn-category");
+    console.log(activeButton);
+    activeButton.forEach(btn => btn.classList.remove("active"));
+
+    const categoryButton = document.getElementById(`cat-btn-${id}`);
+    console.log(categoryButton);
+    categoryButton.classList.add("active")
     
     fetch(url)
     .then(res => res.json())
@@ -20,7 +28,7 @@ const loadItemDetails=(id)=>{
     fetch(url)
     .then(res => res.json())
     .then((data) => displayModal(data.plants));
-}
+};
 
 const displayCategories = (categories)=>{
     // console.log(categories)
@@ -29,7 +37,7 @@ const displayCategories = (categories)=>{
     for(let cat of categories){
         const categoryCard = document.createElement('div');
         categoryCard.innerHTML = `
-        <li class="block text-black hover:bg-[#0b7a4f] hover:text-white px-3 py-2 rounded" onclick= "loadItems('${cat.id}')">${cat.category_name}
+        <li id="cat-btn-${cat.id}" class=" btn-category block text-black hover:bg-[#0b7a4f] hover:text-white px-3 py-2 rounded" onclick= "loadItems('${cat.id}')">${cat.category_name}
           </li>`;
 
           catConatiner.appendChild(categoryCard);
