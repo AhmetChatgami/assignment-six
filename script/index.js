@@ -6,7 +6,10 @@ const loadCategories=()=>{
 };
 
 const loadItems=(id)=>{
-    console.log(id)
+    document.getElementById("items-container").classList.add("hidden");
+    document.getElementById("loading-spinner").classList.remove("hidden")
+
+
     const url = `https://openapi.programming-hero.com/api/category/${id}`;
 
     const activeButton= document.querySelectorAll(".btn-category");
