@@ -10,7 +10,7 @@ const loadItems=(id)=>{
     const url = `https://openapi.programming-hero.com/api/category/${id}`;
 
     const activeButton = document.querySelectorAll(".btn-category");
-    console.log(activeButton);
+    
     activeButton.forEach(btn => btn.classList.remove("active"));
 
     const categoryButton = document.getElementById(`cat-btn-${id}`);
