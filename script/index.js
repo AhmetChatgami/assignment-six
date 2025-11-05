@@ -67,7 +67,7 @@ console.log(items);
             <span class="bg-[#DCFCE7] text-[#15803D] font-semibold text-xs px-3 py-1 rounded-full">${item.category}</span>
             <span class="text-gray-800 font-semibold item-price">৳${item.price}</span>
           </div>
-          <button onclick="addToCart(this)" class="w-full mt-3 bg-[#0b7a4f] text-white rounded-full py-2 text-sm hover:bg-[#0d9660]">
+          <button onclick="addToCart(event,this)" class="w-full mt-3 bg-[#0b7a4f] text-white rounded-full py-2 text-sm hover:bg-[#0d9660]">
             Add to Cart
           </button>
         </div>
@@ -107,20 +107,24 @@ loadCategories();
 //   console.log(e.target);
 // });
 
-const addToCart=(btn)=>{
+const addToCart=(event,btn)=>{
+  event.stopPropagation();
   const card = btn.parentNode.parentNode;
+  console.log("add to cart")
   const itemTitle= card.querySelector(".item-title").innerText;
   
   const itemPrice= card.querySelector(".item-price").innerText;
   console.log(itemTitle, itemPrice);
+  const priceNum = Number(itemPrice.replace("৳", ""));
+  console.log(priceNum);
   
   const selectedItem = {
     itemTitle:itemTitle,
     // foodImg:foodImg,
-    itemPrice:itemPrice,
+    itemPrice:priceNum,
   };
   cart.push(selectedItem);
-  total= total+itemPrice;
+  total= total+priceNum;
   displayCart(cart);
   displayTotal(total);
 
