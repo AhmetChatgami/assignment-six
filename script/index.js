@@ -58,14 +58,14 @@ console.log(items);
         const itemCard = document.createElement("div");
         itemCard.innerHTML = `
         <div onclick="loadItemDetails(${item.id})" class="bg-white rounded-lg shadow-sm p-4">
-          <div class="bg-gray-200 h-40 rounded mb-3"><img src="${item.image}" class="w-full h-full object-cover rounded food-img"></div>
-          <h4 class="font-semibold food-title">${item.name}</h4>
+          <div class="bg-gray-200 h-40 rounded mb-3"><img src="${item.image}" class="w-full h-full object-cover rounded item-img"></div>
+          <h4 class="font-semibold item-title">${item.name}</h4>
           <p class="text-sm text-gray-600 mb-2">
             ${item.description}
           </p>
           <div class="flex justify-between items-center">
             <span class="bg-[#DCFCE7] text-[#15803D] font-semibold text-xs px-3 py-1 rounded-full">${item.category}</span>
-            <span class="text-gray-800 font-semibold food-Price">৳${item.price}</span>
+            <span class="text-gray-800 font-semibold item-price">৳${item.price}</span>
           </div>
           <button onclick="addToCart(this)" class="w-full mt-3 bg-[#0b7a4f] text-white rounded-full py-2 text-sm hover:bg-[#0d9660]">
             Add to Cart
@@ -109,17 +109,18 @@ loadCategories();
 
 const addToCart=(btn)=>{
   const card = btn.parentNode.parentNode;
-  const foodTitle= card.querySelector(".food-title").innerText;
-  // const foodImg= card.querySelector(".food-img").src;
-  const foodPrice= card.querySelector(".food-Price").innerText;
-  console.log(foodTitle, foodPrice);
+  const itemTitle= card.querySelector(".item-title").innerText;
+  
+  const itemPrice= card.querySelector(".item-price").innerText;
+  console.log(itemTitle, itemPrice);
+  
   const selectedItem = {
-    foodTitle:foodTitle,
+    itemTitle:itemTitle,
     // foodImg:foodImg,
-    foodPrice:foodPrice,
+    itemPrice:itemPrice,
   };
   cart.push(selectedItem);
-  total= total+foodPrice;
+  total= total+itemPrice;
   displayCart(cart);
   displayTotal(total);
 
@@ -140,8 +141,8 @@ const displayCart=()=>{
         <ul class="space-y-3 text-sm">
           <li class="flex justify-between items-center bg-[#F0FDF4] w-full rounded-md">
             <div class="p-3 w-full">
-              <p class="item-title font-medium">Mango Tree</p>
-              <p class="text-gray-500">৳500 × 1</p>
+              <p class="item-title font-medium">${item.itemTitle}</p>
+              <p class="text-gray-500 item-price">৳${item.itemPrice} × 1</p>
             </div>
             <button onclick= "removeCart(this)" class="text-gray-400 hover:text-red-500 text-2xl p-3">×</button>
           </li>
@@ -157,6 +158,11 @@ const displayCart=()=>{
 
 const removeCart=(btn)=>{
   const item= btn.parentNode;
-  const foodTitle= item.querySelector(".item-title");
-  console.log(btn);
+  const itemTitle= item.querySelector(".item-title").innerText;
+  const itemPrice= item.querySelector(".item-price").innerText;
+  cart = cart.filter((item)=> item.itemTitle != itemTitle);
+  total = 0;
+  cart.forEach((item)=> (total += item.itemPrice));
+  displayTotal(total);
+  displayCart(cart);
 };
