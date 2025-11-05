@@ -6,9 +6,8 @@ const loadCategories=()=>{
 };
 
 const loadItems=(id)=>{
-    document.getElementById("items-container").classList.add("hidden");
-    document.getElementById("loading-spinner").classList.remove("hidden")
-
+     document.getElementById("items-container").classList.remove("hidden");
+    document.getElementById("loading-spinner").classList.add("hidden");
 
     const url = `https://openapi.programming-hero.com/api/category/${id}`;
 
@@ -33,6 +32,9 @@ const loadItemDetails=(id)=>{
     .then((data) => displayModal(data.plants));
 };
 
+let cart = [];
+let total = 0;
+
 const displayCategories = (categories)=>{
     // console.log(categories)
     const catConatiner = document.getElementById('category-container');
@@ -56,22 +58,27 @@ console.log(items);
         const itemCard = document.createElement("div");
         itemCard.innerHTML = `
         <div onclick="loadItemDetails(${item.id})" class="bg-white rounded-lg shadow-sm p-4">
-          <div class="bg-gray-200 h-40 rounded mb-3"><img src="${item.image}" class="w-full h-full object-cover rounded"></div>
-          <h4 class="font-semibold">${item.name}</h4>
+          <div class="bg-gray-200 h-40 rounded mb-3"><img src="${item.image}" class="w-full h-full object-cover rounded food-img"></div>
+          <h4 class="font-semibold food-title">${item.name}</h4>
           <p class="text-sm text-gray-600 mb-2">
             ${item.description}
           </p>
           <div class="flex justify-between items-center">
             <span class="bg-[#DCFCE7] text-[#15803D] font-semibold text-xs px-3 py-1 rounded-full">${item.category}</span>
-            <span class="text-gray-800 font-semibold">৳${item.price}</span>
+            <span class="text-gray-800 font-semibold food-Price">৳${item.price}</span>
           </div>
-          <button class="w-full mt-3 bg-[#0b7a4f] text-white rounded-full py-2 text-sm hover:bg-[#0d9660]">
+          <button onclick="addToCart(this)" class="w-full mt-3 bg-[#0b7a4f] text-white rounded-full py-2 text-sm hover:bg-[#0d9660]">
             Add to Cart
           </button>
         </div>
         `;
         itemsContainer.append(itemCard);
     });
+
+
+    document.getElementById("items-container").classList.remove("hidden");
+    document.getElementById("loading-spinner").classList.add("hidden");
+
 };
 
 const displayModal=(item)=>{
@@ -95,3 +102,61 @@ const displayModal=(item)=>{
 };
 
 loadCategories();
+
+// document.getElementById("items-container").addEventListener("click", (e)=>{
+//   console.log(e.target);
+// });
+
+const addToCart=(btn)=>{
+  const card = btn.parentNode.parentNode;
+  const foodTitle= card.querySelector(".food-title").innerText;
+  // const foodImg= card.querySelector(".food-img").src;
+  const foodPrice= card.querySelector(".food-Price").innerText;
+  console.log(foodTitle, foodPrice);
+  const selectedItem = {
+    foodTitle:foodTitle,
+    // foodImg:foodImg,
+    foodPrice:foodPrice,
+  };
+  cart.push(selectedItem);
+  total= total+foodPrice;
+  displayCart(cart);
+  displayTotal(total);
+
+};
+const displayTotal=(val)=>{
+  document.getElementById("cart-total").innerHTML= val;
+}
+
+const displayCart=()=>{
+  const cartContainer= document.getElementById('cart-container');
+  cartContainer.innerHTML= "";
+
+  for(let item of cart){
+
+    const newItem= document.createElement("div");
+    newItem.innerHTML= `
+   
+        <ul class="space-y-3 text-sm">
+          <li class="flex justify-between items-center bg-[#F0FDF4] w-full rounded-md">
+            <div class="p-3 w-full">
+              <p class="item-title font-medium">Mango Tree</p>
+              <p class="text-gray-500">৳500 × 1</p>
+            </div>
+            <button onclick= "removeCart(this)" class="text-gray-400 hover:text-red-500 text-2xl p-3">×</button>
+          </li>
+
+        </ul>
+
+    `;
+
+    cartContainer.append(newItem);
+  }
+
+};
+
+const removeCart=(btn)=>{
+  const item= btn.parentNode;
+  const foodTitle= item.querySelector(".item-title");
+  console.log(btn);
+};
